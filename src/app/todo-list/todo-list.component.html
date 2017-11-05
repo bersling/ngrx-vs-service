@@ -1,0 +1,5 @@
+<h1>Todos</h1>
+
+<div *ngFor="let todo of todos">
+  <app-todo [todo]="todo" (remove)="doRemove($event)" (update)="doUpdate($event)"></app-todo>
+</div>
