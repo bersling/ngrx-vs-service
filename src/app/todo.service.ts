@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
+const INITIAL_TODOS = {};
+(() => {
+  for (let i = 0; i < 100; i++) {
+    INITIAL_TODOS[i] = {
+      title: `Todo`,
+      id: i
+    };
+  }
+})();
 
-const INITIAL_TODOS = Array(100).fill('').map((_, i) => {
-  return {
-    id: i,
-    title: `Todo `
-  };
-});
 
 @Injectable()
 export class TodoService {
 
-  todos = new BehaviorSubject<any[]>(INITIAL_TODOS);
+  todos = new BehaviorSubject<{[id: number]: any}>(INITIAL_TODOS);
 
   constructor(
     private http: HttpClient
@@ -24,15 +27,12 @@ export class TodoService {
   }
 
   removeTodo(id: number) {
-    console.log (id, this.todos.getValue());
-    const newTodos = this.todos.getValue().filter(todo => todo.id !== id);
-    console.log(newTodos, 'new todos');
+    const newTodos = this.todos.getValue();
+    delete newTodos[id];
     this.todos.next(newTodos);
-    console.log('new get value', this.getTodos().getValue());
   }
 
   update(todo) {
-    console.log('updating', todo);
     const newTodos = this.getTodos().getValue();
     newTodos[todo.id] = todo;
     this.todos.next(newTodos);
