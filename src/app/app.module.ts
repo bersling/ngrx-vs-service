@@ -8,43 +8,27 @@ import {HttpClientModule} from '@angular/common/http';
 import {TodoService} from './todo.service';
 import {StoreModule} from '@ngrx/store';
 
-
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
-export const RESET = 'RESET';
-
 import {Action} from 'rxjs/scheduler/Action';
+import {FodoListComponent} from './fodo-list/fodo-list.component';
+import {FodoService} from './fodo.service';
+import {fodosReducer} from './fodo.reducer';
 
-
-const todosReducer = (state: number = 0, action) => {
-  switch (action.type) {
-    case INCREMENT:
-      return state + 1;
-
-    case DECREMENT:
-      return state - 1;
-
-    case RESET:
-      return 0;
-
-    default:
-      return state;
-  }
-}
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoComponent,
-    TodoListComponent
+    TodoListComponent,
+    FodoListComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot({ todos: todosReducer })
+    StoreModule.forRoot({ todos: fodosReducer })
   ],
   providers: [
-    TodoService
+    TodoService,
+    FodoService
   ],
   bootstrap: [AppComponent]
 })
